@@ -21,3 +21,5 @@ touch index.js
 #update npm 
 
 npm install mongoose
+
+npm install body-parser express-session passport passport-local-mongoose connect-ensure-login
