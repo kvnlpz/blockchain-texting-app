@@ -1,5 +1,11 @@
 sudo apt update && sudo apt upgrade -y
 
+echo "installing node and NPM"
+
+# if you dont have it installed already
+sudo apt-get install nodejs npm
+
+
 #update npm 
 npm install -g npm@latest
 
@@ -13,12 +19,10 @@ npm install babel-cli babel-preset-env babel-preset-stage-0 --save--dev
 
 npm install body-parser express-session passport passport-local-mongoose connect-ensure-login
 
-
+# Do this manually
 # change "test" in package.json to this:  "start": "nodemon ./index.js ==exec babel-node -e js"
 
-
 touch .babelrc
-
 
 touch index.js
 
@@ -42,8 +46,9 @@ sudo systemctl start mongod
 
 sudo systemctl enable mongod
 
-mongo
 
+echo "ENTER mongo TO START THE MONDODB INSTANCE"
+echo "THEN ENTER use AlephChat"
 # use AlephChat
 
 
