@@ -19,6 +19,8 @@ npm install babel-cli babel-preset-env babel-preset-stage-0 --save--dev
 
 npm install body-parser express-session passport passport-local-mongoose connect-ensure-login
 
+npm install aleph-js
+
 # Do this manually
 # change "test" in package.json to this:  "start": "nodemon ./index.js ==exec babel-node -e js"
 
