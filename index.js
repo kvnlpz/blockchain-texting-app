@@ -47,21 +47,24 @@ passport.use(User.createStrategy())
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
-//User.create({ username: 'Ralph', password: 'password'})
-//User.create({ username: 'Michael Scott', password: 'invalid'})
-//User.create({ username: 'Debby', password: 'password123'})
-
-//User.register({ username: 'jackson', active:false}, 'password')
-
 app.get('/', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
-    var room = 'hall'
+    var room = 'main'
     var api_server = 'https://api2.aleph.im'
     var network_id = 261
     var channel = 'Test'
-    aleph.posts.get_posts('chat', {'refs': [room], 'api_server': api_server}).then((result) =>{
-        res.render('index', {posts: result.posts, user: req.user})
+    aleph.posts.get_posts('chat', {'refs': [room], 'api_server': api_server}).then((result) => {
+        res.render('index', { posts: result.posts, user: req.user, room: room })
     })
-    
+})
+
+app.get('/rooms/:room', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
+    var room = req.params.room
+    var api_server = 'https://api2.aleph.im'
+    var network_id = 261
+    var channel = 'Test'
+    aleph.posts.get_posts('chat', {'refs': [room], 'api_server': api_server}).then((result) => {
+        res.render('index', { posts: result.posts, user: req.user, room: room })
+    })
 })
 
 app.get('/login', (req,res) => {
@@ -79,14 +82,13 @@ app.post('/register', (req,res) => {
             user.private_key = eth_account.private_key
             user.public_key = eth_account.public_key
             user.mnemonics = eth_account.mnemonics
-            user.adress = eth_account.address
+            user.address = eth_account.address
             user.save()
+
             passport.authenticate('local')(req, res, () => {
                 res.redirect('/')
             })
         })
-
-        
     })
 })
 
@@ -95,13 +97,14 @@ app.post('/login', passport.authenticate('local'), (req, res) => {
 })
 
 // Pushes messages to Aleph network
-app.post("/messages", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
+app.post("/messages/:room", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
+
     var message = req.body.message
+    const room = req.params.room
     aleph.ethereum.import_account({ mnemonics: req.user.mnemonics}).then((account) => {
-        var room = 'hall'
         var api_server = 'https://api2.aleph.im'
         var network_id = 261
-        var channel = 'Test'
+        var channel = 'TEST'
 
         aleph.posts.submit(account.address, 'chat', { 'body' : message }, {
             ref: room,
@@ -126,5 +129,3 @@ app.get('/users/:username', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}...`)
 })
-
-console.log(mongoose)

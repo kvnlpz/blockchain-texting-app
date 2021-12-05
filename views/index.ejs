@@ -15,25 +15,52 @@
 
 </head>
 <body>
+    <div id='current-user' data-address="<%= user.address %>"></div>
+    <div id='current-room' data-room="<%= room %>"></div>
     <div class="container-fluid">
         <div class="row">
           <div class="col-3 rooms-sidebar">
             <div class="card no-outline">
               <div class="card-body">
                 <small>Logged in as</small><br>
-                <b>TODO: Hook this up<br></b>
+                <b><%= user.username %><br></b>
               </div>
             </div>
             <hr>
             <hr>
-                <div class="card no-outline mb-2 room-card">
+            <a href ="/rooms/Main" class = 'room-link'>
+                <div class="card no-outline mb-2 room-card <%= room == 'hall' ? 'active' : '' %>">
                     <div class="card-body">
-                    <span class='name'>Chat</span><br>
+                    <span class='name'>Main</span><br>
                     <span class='member-count'>
                         <small>99 Members</small>
                     </span>
                     </div>
                 </div>
+            </a>
+
+            <a href ="/rooms/CSUF" class = 'room-link'>
+                <div class="card no-outline mb-2 room-card <%= room == 'troll' ? 'active' : '' %>">
+                    <div class="card-body">
+                    <span class='name'>CSUF</span><br>
+                    <span class='member-count'>
+                        <small>87 Members</small>
+                    </span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href ="/rooms/Study Hall" class = 'room-link'>
+                <div class="card no-outline mb-2 room-card <%= room == 'techies' ? 'active' : '' %>">
+                    <div class="card-body">
+                    <span class='name'>Study Hall</span><br>
+                    <span class='member-count'>
+                        <small>23 Members</small>
+                    </span>
+                    </div>
+                </div>
+            </a>
+            
           </div>
           <div class="col-9">
               <div class="chat-room">
@@ -44,9 +71,9 @@
                   <small>99 Members</small>
                 </nav>
                 <div id="messages">
-                    <% posts.forEach((post) => { %>
+                    <% posts.reverse().forEach((post) => { %>
                         <% var parsed_item = JSON.parse(post.item_content) %>
-                        <div class="message mb-2 <%= parsed_item.address == user.address ? 'me' : '' %>">
+                        <div id="message-<%= post._id['$oid'] %>" class="message mb-2 <%= parsed_item.address == user.address ? 'me' : '' %>">
                             <div class="content-container">
                             <div class="content">
                                 <%= parsed_item.content.body %>
@@ -59,7 +86,7 @@
                     <% }) %>
                 </div>
                 <div class="chat-box">
-                    <form action="/messages" method="post" id='message-form'>
+                    <form action="/messages/<%= room %>" method="post" id='message-form'>
                         <div class="input-group">
                             <input type='text' name="message" id="message" cols="30" rows="10" class='form-control'>
                             <div class="input-group"></div>
@@ -74,9 +101,10 @@
 
     <script type='text/javascript'>
         $(document).ready(() => {
-
             function appendMessage(message) {
-                var template = '<div class="message mb-2"> \
+                if (isNotOnPage(message) && isForChannel(message) && isChatMessage(message))  {
+                    var user_address = $('#current-user').data('address')
+                    var template = '<div class="message mb-2 ' + (user_address == message.content.address ? "me" : "") + '"> \
                         <div class="content-container"> \
                         <div class="content">' + message.content.content.body + '</div> \
                         <div class="author">' + message.content.address + '</div> \
@@ -84,7 +112,21 @@
                         </div> \
                     </div>'
                 $('#messages').append(template)
+                }
             }
+
+            function isForChannel(message) {
+                return $('#current-room').data('room') == message.content.ref
+            }
+
+            function isNotOnPage(message) {
+                return $(`#message-${message._id}`)[0] == undefined
+            }
+
+            function isChatMessage(message) {
+                return message.content.content.body != undefined
+            }
+
             const socket = new WebSocket('wss://api2.aleph.im/api/ws0/messages?msgType=POST&contentType=chat')
             socket.onmessage = (e) => {
                 let message = JSON.parse(e.data)
@@ -93,7 +135,7 @@
 
             $('#message-form').submit((e) => {
                 e.preventDefault();
-                $.post('/messages', $('#message-form').serialize())
+                $.post('/messages/<%= room %>', $('#message-form').serialize())
                 $('#message-form input[type=text]').val('')
             })
         })
