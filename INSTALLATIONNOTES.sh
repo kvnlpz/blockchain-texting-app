@@ -21,6 +21,9 @@ npm install body-parser express-session passport passport-local-mongoose connect
 
 npm install aleph-js
 
+npm install ejs # You may need to run npm nodemon and npm install babel-cli babel-preset-env babel-preset-stage-0 --save--dev
+# 
+
 # Do this manually
 # change "test" in package.json to this:  "start": "nodemon ./index.js ==exec babel-node -e js"
 
