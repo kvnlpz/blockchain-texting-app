@@ -29,7 +29,7 @@
             <hr>
             <hr>
             <a href ="/rooms/Main" class = 'room-link'>
-                <div class="card no-outline mb-2 room-card <%= room == 'hall' ? 'active' : '' %>">
+                <div class="card no-outline mb-2 room-card <%= room == 'Main' ? 'active' : '' %>">
                     <div class="card-body">
                     <span class='name'>Main</span><br>
                     <span class='member-count'>
@@ -40,7 +40,7 @@
             </a>
 
             <a href ="/rooms/CSUF" class = 'room-link'>
-                <div class="card no-outline mb-2 room-card <%= room == 'troll' ? 'active' : '' %>">
+                <div class="card no-outline mb-2 room-card <%= room == 'CSUF' ? 'active' : '' %>">
                     <div class="card-body">
                     <span class='name'>CSUF</span><br>
                     <span class='member-count'>
@@ -51,7 +51,7 @@
             </a>
             
             <a href ="/rooms/Study Hall" class = 'room-link'>
-                <div class="card no-outline mb-2 room-card <%= room == 'techies' ? 'active' : '' %>">
+                <div class="card no-outline mb-2 room-card <%= room == 'Study Hall' ? 'active' : '' %>">
                     <div class="card-body">
                     <span class='name'>Study Hall</span><br>
                     <span class='member-count'>
@@ -120,7 +120,8 @@
             }
 
             function isNotOnPage(message) {
-                return $(`#message-${message._id}`)[0] == undefined
+                console.log(message)
+                return $(`#message-${message.item_hash}`)[0] == undefined
             }
 
             function isChatMessage(message) {
