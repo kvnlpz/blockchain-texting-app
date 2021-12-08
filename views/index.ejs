@@ -6,81 +6,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="../stylesheets/index.css">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 
 </head>
 <body>
-    <div id='current-user' data-address="<%= user.address %>"></div>
-    <div id='current-room' data-room="<%= room %>"></div>
-    <div class="container-fluid">
-        <div class="row">
-          <div class="col-3 rooms-sidebar">
+<div id='current-user' data-address="<%= user.address %>"></div>
+<div id='current-room' data-room="<%= room %>"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3 rooms-sidebar">
             <div class="card no-outline">
-              <div class="card-body">
-                <small>Logged in as</small><br>
-                <b><%= user.username %><br></b>
-              </div>
+                <div class="card-body">
+                    <small>Logged in as</small><br>
+                    <b><%= user.username %><br></b>
+                </div>
             </div>
             <hr>
             <hr>
-            <a href ="/rooms/Main" class = 'room-link'>
+            <a href="/rooms/Main" class='room-link'>
                 <div class="card no-outline mb-2 room-card <%= room == 'Main' ? 'active' : '' %>">
                     <div class="card-body">
-                    <span class='name'>Main</span><br>
-                    <span class='member-count'>
+                        <span class='name'>Main</span><br>
+                        <span class='member-count'>
                         <small>99 Members</small>
                     </span>
                     </div>
                 </div>
             </a>
 
-            <a href ="/rooms/CSUF" class = 'room-link'>
+            <a href="/rooms/CSUF" class='room-link'>
                 <div class="card no-outline mb-2 room-card <%= room == 'CSUF' ? 'active' : '' %>">
                     <div class="card-body">
-                    <span class='name'>CSUF</span><br>
-                    <span class='member-count'>
+                        <span class='name'>CSUF</span><br>
+                        <span class='member-count'>
                         <small>87 Members</small>
                     </span>
                     </div>
                 </div>
             </a>
-            
-            <a href ="/rooms/Study Hall" class = 'room-link'>
+
+            <a href="/rooms/Study Hall" class='room-link'>
                 <div class="card no-outline mb-2 room-card <%= room == 'Study Hall' ? 'active' : '' %>">
                     <div class="card-body">
-                    <span class='name'>Study Hall</span><br>
-                    <span class='member-count'>
+                        <span class='name'>Study Hall</span><br>
+                        <span class='member-count'>
                         <small>23 Members</small>
                     </span>
                     </div>
                 </div>
             </a>
-            
-          </div>
-          <div class="col-9">
-              <div class="chat-room">
+
+        </div>
+        <div class="col-9">
+            <div class="chat-room">
                 <nav class="navbar navbar-light">
                   <span class="navbar-brand" href="#">
                     <b>Chat</b>
                   </span>
-                  <small>99 Members</small>
+                    <small>99 Members</small>
                 </nav>
                 <div id="messages">
                     <% posts.reverse().forEach((post) => { %>
                         <% var parsed_item = JSON.parse(post.item_content) %>
-                        <div id="message-<%= post._id['$oid'] %>" class="message mb-2 <%= parsed_item.address == user.address ? 'me' : '' %>">
+                        <div id="message-<%= post._id['$oid'] %>"
+                             class="message mb-2 <%= parsed_item.address == user.address ? 'me' : '' %>">
                             <div class="content-container">
-                            <div class="content">
-                                <%= parsed_item.content.body %>
-                            </div>
-                            <div class="author">
-                                <%= parsed_item.address %>
-                            </div>
+                                <div class="content">
+                                    <%= parsed_item.content.body %>
+                                </div>
+                                <div class="author">
+                                    <%= parsed_item.address %>
+                                </div>
                             </div>
                         </div>
                     <% }) %>
@@ -94,17 +101,17 @@
                         </div>
                     </form>
                 </div>
-              </div>
-          </div>
+            </div>
         </div>
-      </div>
+    </div>
+</div>
 
-    <script type='text/javascript'>
-        $(document).ready(() => {
-            function appendMessage(message) {
-                if (isNotOnPage(message) && isForChannel(message) && isChatMessage(message))  {
-                    var user_address = $('#current-user').data('address')
-                    var template = '<div class="message mb-2 ' + (user_address == message.content.address ? "me" : "") + '"> \
+<script type='text/javascript'>
+    $(document).ready(() => {
+        function appendMessage(message) {
+            if (isNotOnPage(message) && isForChannel(message) && isChatMessage(message)) {
+                var user_address = $('#current-user').data('address')
+                var template = '<div class="message mb-2 ' + (user_address == message.content.address ? "me" : "") + '"> \
                         <div class="content-container"> \
                         <div class="content">' + message.content.content.body + '</div> \
                         <div class="author">' + message.content.address + '</div> \
@@ -112,35 +119,35 @@
                         </div> \
                     </div>'
                 $('#messages').append(template)
-                }
             }
+        }
 
-            function isForChannel(message) {
-                return $('#current-room').data('room') == message.content.ref
-            }
+        function isForChannel(message) {
+            return $('#current-room').data('room') == message.content.ref
+        }
 
-            function isNotOnPage(message) {
-                console.log(message)
-                return $(`#message-${message.item_hash}`)[0] == undefined
-            }
+        function isNotOnPage(message) {
+            console.log(message)
+            return $(`#message-${message.item_hash}`)[0] == undefined
+        }
 
-            function isChatMessage(message) {
-                return message.content.content.body != undefined
-            }
+        function isChatMessage(message) {
+            return message.content.content.body != undefined
+        }
 
-            const socket = new WebSocket('wss://api2.aleph.im/api/ws0/messages?msgType=POST&contentType=chat')
-            socket.onmessage = (e) => {
-                let message = JSON.parse(e.data)
-                appendMessage(message)
-            }
+        const socket = new WebSocket('wss://api2.aleph.im/api/ws0/messages?msgType=POST&contentType=chat')
+        socket.onmessage = (e) => {
+            let message = JSON.parse(e.data)
+            appendMessage(message)
+        }
 
-            $('#message-form').submit((e) => {
-                e.preventDefault();
-                $.post('/messages/<%= room %>', $('#message-form').serialize())
-                $('#message-form input[type=text]').val('')
-            })
+        $('#message-form').submit((e) => {
+            e.preventDefault();
+            $.post('/messages/<%= room %>', $('#message-form').serialize())
+            $('#message-form input[type=text]').val('')
         })
-    </script>
+    })
+</script>
 
 </body>
 </html>
